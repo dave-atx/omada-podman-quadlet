@@ -1,0 +1,19 @@
+# cloudflared-tunnel.container
+[Unit]
+Description=Cloudflare Tunnel Container
+PartOf=omada-services.target
+
+[Container]
+Image=docker.io/cloudflare/cloudflared
+ContainerName=cloudflared-tunnel
+EnvironmentFile=.env
+# Use the TUNNEL_TOKEN from .env file
+Network=omada-nw.network:ip=192.168.49.11
+Exec=tunnel run
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=omada-services.target
+

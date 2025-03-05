@@ -1,0 +1,25 @@
+[Unit]
+Description=Tailscale
+PartOf=omada-services.target
+
+[Container]
+Image=docker.io/tailscale/tailscale
+ContainerName=tailscale
+AddCapability=NET_ADMIN,NET_RAW,SYS_MODULE
+AddDevice=/dev/net/tun
+EnvironmentFile=.env
+Environment=TS_ROUTES=192.168.49.0/24
+Environment=TS_EXTRA_ARGS=--accept-routes
+Environment=TS_STATE_DIR=/var/lib/tailscale
+# Use the TS_AUTHKEY from .env file
+Volume=tailscale-state:/var/lib/tailscale
+Sysctl=net.ipv4.conf.all.src_valid_mark=1
+Sysctl=net.ipv4.conf.all.forwarding=1
+Sysctl=net.ipv6.conf.all.forwarding=1
+Network=omada-nw.network:ip=192.168.49.17
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=omada-services.target

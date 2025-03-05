@@ -1,0 +1,20 @@
+# sftpgo.container
+[Unit]
+Description=SFTP Container
+After=cloudflared-tunnel.service
+Requires=cloudflared-tunnel.service
+PartOf=omada-services.target
+
+[Container]
+Image=docker.io/drakkan/sftpgo:alpine-slim
+ContainerName=sftpgo
+Volume=docker-omada-compose_sftp-home:/var/lib/sftpgo
+Volume=docker-omada-compose_sftp-data:/srv/sftpgo
+Network=omada-nw.network:ip=192.168.49.12
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=omada-services.target
+

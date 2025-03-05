@@ -1,0 +1,43 @@
+# omada.container
+[Unit]
+Description=Omada Controller Container
+After=wireguard.service cloudflared-tunnel.service
+Requires=tailscale.service cloudflared-tunnel.service
+PartOf=omada-services.target
+
+[Container]
+Image=docker.io/mbentley/omada-controller:latest
+ContainerName=omada
+Environment=PUID=508
+Environment=PGID=508
+Environment=MANAGE_HTTP_PORT=80
+Environment=MANAGE_HTTPS_PORT=443
+Environment=PORTAL_HTTP_PORT=8088
+Environment=PORTAL_HTTPS_PORT=8843
+Environment=PORT_APP_DISCOVERY=27001
+Environment=PORT_ADOPT_V1=29812
+Environment=PORT_UPGRADE_V1=29813
+Environment=PORT_MANAGER_V1=29811
+Environment=PORT_MANAGER_V2=29814
+Environment=PORT_DISCOVERY=29810
+Environment=PORT_TRANSFER_V2=29815
+Environment=PORT_RTTY=29816
+Environment=SHOW_SERVER_LOGS=true
+Environment=SHOW_MONGODB_LOGS=false
+Environment=SSL_CERT_NAME=tls.crt
+Environment=SSL_KEY_NAME=tls.key
+Environment=TZ=America/Los_Angeles
+Volume=docker-omada-compose_omada-data:/opt/tplink/EAPController/data
+Volume=docker-omada-compose_omada-logs:/opt/tplink/EAPController/logs
+Volume=docker-omada-compose_cert:/cert
+Network=omada-nw.network:ip=192.168.49.2
+Sysctl=net.ipv4.ip_unprivileged_port_start=0
+Ulimit=nofile=4096:8192
+PodmanArgs=--stop-timeout 60
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=omada-services.target
+

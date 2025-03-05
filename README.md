@@ -1,6 +1,7 @@
 # Podman Recipe for TP-Link Omada Software Controller
 rootless podman [quadlet][1] recipe
-for the Omada Software Controller.
+for the Omada Software Controller. Uses pure `systemd`
+to orchestrate the containers.
 
 Intended to be hosted on a free tier class cloud server 
 for home-sized networks. Utilizes mbentley's 
@@ -35,11 +36,6 @@ files:
 
 which causes podman to parse the service files and check
 for errors.
-
-Note that this repository has "docker compose" in the name
-since originally it used `podman-compose` for orchestrating
-the various containers. It now uses pure `systemd` which
-is one less dependency and seemingly more reliable.
 
 [1]: https://www.redhat.com/en/blog/multi-container-application-podman-quadlet
 [2]: https://github.com/mbentley/docker-omada-controller

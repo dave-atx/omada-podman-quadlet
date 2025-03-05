@@ -15,7 +15,7 @@ storage backend.
 ## Installation
 Contents of this repository are intended to live inside
 `.config` in your home directory. You'll need to configure
-the `.env` file in `.config/containers/systemd/` for your
+the `.env` file in [`.config/containers/systemd/`][6] for your
 `cloudflared` and `tailscale` keys.
 
 To enable and start services at login:
@@ -46,4 +46,4 @@ is one less dependency and seemingly more reliable.
 [3]: https://hub.docker.com/r/tailscale/tailscale
 [4]: https://hub.docker.com/r/cloudflare/cloudflared
 [5]: https://hub.docker.com/r/drakkan/sftpgo
-
+[6]: https://github.com/dave-atx/docker-omada-compose/blob/main/.config/containers/systemd/.env.example

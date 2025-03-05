@@ -1,4 +1,4 @@
 # get systemd style syntax highlighting on github
-*.container linguist-language=desktop
-*.network linguist-language=desktop
-*.target linguist-language=desktop
+*.container linguist-language=ini
+*.network linguist-language=ini
+*.target linguist-language=ini

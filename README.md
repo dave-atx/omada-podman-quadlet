@@ -21,7 +21,6 @@ for your `cloudflared` and `tailscale` keys.
 
 To enable and start services at login:
 
-    systemctl --user enable omada.target
     systemctl --user start omada.target
 
 If you make changes to any of the service files after

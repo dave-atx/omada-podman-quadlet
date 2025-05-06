@@ -1,7 +1,6 @@
 # cloudflared-tunnel.container
 [Unit]
 Description=Cloudflare Tunnel Container
-After=network-online.target
 
 [Container]
 Image=docker.io/cloudflare/cloudflared:latest

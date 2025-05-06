@@ -1,9 +1,10 @@
 [Unit]
 Description=Tailscale
-PartOf=omada-services.target
+After=network-online.target
 
 [Container]
-Image=docker.io/tailscale/tailscale
+Image=docker.io/tailscale/tailscale:latest
+AutoUpdate=registry
 ContainerName=tailscale
 AddCapability=NET_ADMIN,NET_RAW,SYS_MODULE
 AddDevice=/dev/net/tun
@@ -19,7 +20,7 @@ Sysctl=net.ipv6.conf.all.forwarding=1
 Network=omada-nw.network:ip=192.168.49.17
 
 [Service]
-Restart=on-failure
+Restart=always
 
 [Install]
-WantedBy=omada-services.target
+WantedBy=default.target

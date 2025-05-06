@@ -1,9 +1,0 @@
-# omada-services.target
-[Unit]
-Description=Omada Services Group
-Wants=tailscale.service omada.service cloudflared-tunnel.service sftpgo.service
-After=network-online.target
-
-[Install]
-WantedBy=default.target
-

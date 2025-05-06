@@ -3,8 +3,8 @@ rootless podman [quadlet][1] recipe
 for the Omada Software Controller. Uses pure `systemd`
 to orchestrate the containers.
 
-Intended to be hosted on a free tier class cloud server 
-for home-sized networks. Utilizes mbentley's 
+Intended to be hosted on a free tier class cloud server
+for home-sized networks. Utilizes mbentley's
 [excellent Docker image][2].
 
 Includes [tailscale][3] for a site to site VPN with the home
@@ -16,13 +16,13 @@ storage backend.
 ## Installation
 Contents of this repository are intended to live inside
 `.config` in your home directory. You'll need to configure
-the `.env` file in [`.config/containers/systemd/`][6] for your
-`cloudflared` and `tailscale` keys.
+the `.env` file in [`.config/containers/systemd/omada/`][6]
+for your `cloudflared` and `tailscale` keys.
 
 To enable and start services at login:
 
-    systemctl --user enable omada-services.target
-    systemctl --user start omada-services.target
+    systemctl --user enable omada.target
+    systemctl --user start omada.target
 
 If you make changes to any of the service files after
 enabling, you need to reload the `systemd` daemon:
@@ -42,4 +42,4 @@ for errors.
 [3]: https://hub.docker.com/r/tailscale/tailscale
 [4]: https://hub.docker.com/r/cloudflare/cloudflared
 [5]: https://hub.docker.com/r/drakkan/sftpgo
-[6]: https://github.com/dave-atx/docker-omada-compose/blob/main/.config/containers/systemd/.env.example
+[6]: https://github.com/dave-atx/docker-omada-compose/blob/main/.config/containers/systemd/omada/.env.example

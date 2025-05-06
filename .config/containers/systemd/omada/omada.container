@@ -3,10 +3,10 @@
 Description=Omada Controller Container
 After=wireguard.service cloudflared-tunnel.service
 Requires=tailscale.service cloudflared-tunnel.service
-PartOf=omada-services.target
 
 [Container]
-Image=docker.io/mbentley/omada-controller:latest
+Image=docker.io/mbentley/omada-controller:5.15
+AutoUpdate=registry
 ContainerName=omada
 Environment=PUID=508
 Environment=PGID=508
@@ -36,8 +36,7 @@ Ulimit=nofile=4096:8192
 PodmanArgs=--stop-timeout 60
 
 [Service]
-Restart=on-failure
+Restart=always
 
 [Install]
-WantedBy=omada-services.target
-
+WantedBy=default.target

@@ -1,0 +1,7 @@
+
+[Unit]
+Description=Caddy Docker Proxy Network
+
+[Network]
+NetworkName=caddy-network
+Driver=bridge

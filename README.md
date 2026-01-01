@@ -3,25 +3,30 @@ rootless podman [quadlet][1] recipe
 for the Omada Software Controller. Uses pure `systemd`
 to orchestrate the containers.
 
-Intended to be hosted on a free tier class cloud server
-for home-sized networks. Utilizes mbentley's
-[excellent Docker image][2].
+Intended to be hosted locally on a Raspberry Pi. Utilizes mbentley's
+[excellent Docker image][2]. For a previous version of
+this repository targeted at a free tier class cloud server
+for home-sized networks, see the `omada-v5` tag.
 
-Includes [tailscale][3] for a site to site VPN with the home
-network, [cloudflared][4] for exposing the controller to the
-internet behind zero trust authentication, and [sftpgo][5]
-for pushing backups from the controller to an S3 compatible
-storage backend.
+Includes [caddy-docker-proxy][7] to reverse proxy to the omada
+web server and [sftpgo][5] for pushing backups from the controller
+to an S3 compatible storage backend.
+
+The Cloudflare ACME DNS API plugin is used for automatic
+LetsEncrypt SSL cert generation.
 
 ## Installation
 Contents of this repository are intended to live inside
 `.config` in your home directory. You'll need to configure
-the `.env` file in [`.config/containers/systemd/omada/`][6]
-for your `cloudflared` and `tailscale` keys.
+the `caddy.env` file in [`.config/containers/systemd/omada/`][6]
+for your `cloudflare` keys.
+
+You'll also need the configure A, AAAA, or CNAME DNS records pointing
+to your server to access the Omada and sftpgo web interfaces.
 
 To enable and start services at login:
 
-    systemctl --user start omada.target
+    systemctl --user start omada.service
 
 If you make changes to any of the service files after
 enabling, you need to reload the `systemd` daemon:
@@ -38,7 +43,6 @@ for errors.
 
 [1]: https://www.redhat.com/en/blog/multi-container-application-podman-quadlet
 [2]: https://github.com/mbentley/docker-omada-controller
-[3]: https://hub.docker.com/r/tailscale/tailscale
-[4]: https://hub.docker.com/r/cloudflare/cloudflared
 [5]: https://hub.docker.com/r/drakkan/sftpgo
-[6]: https://github.com/dave-atx/docker-omada-compose/blob/main/.config/containers/systemd/omada/.env.example
+[6]: https://github.com/dave-atx/docker-omada-compose/blob/main/.config/containers/systemd/omada/caddy.env.example
+[7]: https://github.com/lucaslorentz/caddy-docker-proxy

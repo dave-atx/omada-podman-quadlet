@@ -1,0 +1,32 @@
+[Unit]
+Description=Caddy Docker Proxy
+Requires=podman.socket
+After=podman.socket
+
+[Container]
+Image=ghcr.io/dave-atx/caddy-docker-proxy/caddy-proxy:latest
+ContainerName=caddy-proxy
+AutoUpdate=registry
+Network=caddy.network
+PublishPort=80:80
+PublishPort=443:443
+
+Label="caddy.acme_dns=cloudflare {env.CLOUDFLARE_API_TOKEN}"
+
+# Mount Podman socket for docker-proxy plugin
+Volume=%t/podman/podman.sock:/var/run/docker.sock:z
+
+# Mount Caddy data directory for persistence
+Volume=caddy-data:/data
+Volume=caddy-config:/config
+
+# Environment file
+Environment=CADDY_DOCKER_NO_SCOPE=true
+EnvironmentFile=%h/.config/containers/systemd/caddy.env
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
+

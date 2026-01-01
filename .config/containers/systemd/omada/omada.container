@@ -1,17 +1,20 @@
 # omada.container
 [Unit]
 Description=Omada Controller Container
-After=wireguard.service cloudflared-tunnel.service
-Requires=tailscale.service cloudflared-tunnel.service
+Requires=caddy-proxy.service mongodb.service
+After=caddy-proxy.service mongodb.service
 
 [Container]
-Image=docker.io/mbentley/omada-controller:5.15
+Image=docker.io/mbentley/omada-controller:6.0
 AutoUpdate=registry
 ContainerName=omada
+#Environment=ROOTLESS=true
+Environment=MONGO_EXTERNAL=true
+Environment=EAP_MONGOD_URI=mongodb://omada:0m4d4@mongodb:27017/omada
 Environment=PUID=508
 Environment=PGID=508
-Environment=MANAGE_HTTP_PORT=80
-Environment=MANAGE_HTTPS_PORT=443
+Environment=MANAGE_HTTP_PORT=8080
+Environment=MANAGE_HTTPS_PORT=8043
 Environment=PORTAL_HTTP_PORT=8088
 Environment=PORTAL_HTTPS_PORT=8843
 Environment=PORT_APP_DISCOVERY=27001
@@ -27,13 +30,22 @@ Environment=SHOW_MONGODB_LOGS=false
 Environment=SSL_CERT_NAME=tls.crt
 Environment=SSL_KEY_NAME=tls.key
 Environment=TZ=America/Los_Angeles
-Volume=docker-omada-compose_omada-data:/opt/tplink/EAPController/data
-Volume=docker-omada-compose_omada-logs:/opt/tplink/EAPController/logs
-Volume=docker-omada-compose_cert:/cert
-Network=omada-nw.network:ip=192.168.49.2
+Volume=omada-data:/opt/tplink/EAPController/data
+Volume=omada-logs:/opt/tplink/EAPController/logs
+Volume=omada-cert:/cert
+Network=caddy.network
+Network=omada.network
 Sysctl=net.ipv4.ip_unprivileged_port_start=0
 Ulimit=nofile=4096:8192
-PodmanArgs=--stop-timeout 60
+StopTimeout=60
+PublishPort=19810:19810/udp
+PublishPort=27001:27001/udp
+PublishPort=29810:29810/udp
+PublishPort=29811-29817:29811-29817
+Label="caddy=omada.your-domain-here.example.com"
+Label="caddy.reverse_proxy={{upstreams 8043}}"
+Label="caddy.reverse_proxy.transport=http"
+Label="caddy.reverse_proxy.transport.tls=tls_insecure_skip_verify"
 
 [Service]
 Restart=always

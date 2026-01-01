@@ -1,0 +1,27 @@
+[Unit]
+Description=MongoDB for Omada Controller
+
+[Container]
+Image=docker.io/mongo:4.4.18
+AutoUpdate=registry
+ContainerName=mongodb
+Environment=MONGO_INITDB_ROOT_USERNAME=admin
+Environment=MONGO_INITDB_ROOT_PASSWORD=password
+Environment=MONGO_INITDB_DATABASE=omada
+HealthCmd=mongo --quiet --eval "db.adminCommand('ping')"
+HealthInterval=30s
+HealthTimeout=5s
+HealthRetries=3
+HealthStartPeriod=30s
+Volume=omada-mongo-config:/data/configdb
+Volume=omada-mongo-data:/data/db
+Volume=omada-init-scripts:/docker-entrypoint-initdb.d/omada.js
+Network=omada.network
+
+[Service]
+TimeoutStopSec=60
+Restart=always
+
+[Install]
+WantedBy=default.target
+

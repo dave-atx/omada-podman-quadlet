@@ -1,0 +1,7 @@
+
+[Unit]
+Description=Omada/Mongo Private Network
+
+[Network]
+NetworkName=omada-network
+Driver=bridge

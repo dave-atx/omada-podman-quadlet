@@ -46,6 +46,9 @@ Label="caddy=omada.your-domain-here.example.com"
 Label="caddy.reverse_proxy={{upstreams 8043}}"
 Label="caddy.reverse_proxy.transport=http"
 Label="caddy.reverse_proxy.transport.tls=tls_insecure_skip_verify"
+# Tomcat closes HTTP/2 connections with ENHANCE_YOUR_CALM when Safari
+# requests ~100 lazy-loaded assets at once, so proxy over HTTP/1.1
+Label="caddy.reverse_proxy.transport.versions=1.1"
 
 [Service]
 Restart=always

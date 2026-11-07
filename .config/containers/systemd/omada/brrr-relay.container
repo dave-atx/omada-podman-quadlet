@@ -1,0 +1,18 @@
+[Unit]
+Description=Relay Omada webhooks to brrr push notifications
+
+[Container]
+Image=docker.io/library/python:3-alpine
+AutoUpdate=registry
+ContainerName=brrr-relay
+EnvironmentFile=%h/.config/containers/systemd/omada/brrr.env
+Volume=%h/.config/omada-brrr-relay/relay.py:/app/relay.py:ro
+Exec=python3 -u /app/relay.py
+ReadOnly=true
+Network=caddy.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

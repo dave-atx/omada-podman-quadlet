@@ -1,2 +1,4 @@
 .env
 wireguard/
+brrr.env
+__pycache__/

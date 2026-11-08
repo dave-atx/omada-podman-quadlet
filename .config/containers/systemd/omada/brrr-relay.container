@@ -2,14 +2,24 @@
 Description=Relay Omada webhooks to brrr push notifications
 
 [Container]
-Image=docker.io/library/python:3-alpine
+# Pinned to a Python minor version (security fixes until Oct 2030);
+# AutoUpdate still pulls its patch releases and Alpine updates
+Image=docker.io/library/python:3.14-alpine
 AutoUpdate=registry
 ContainerName=brrr-relay
 EnvironmentFile=%h/.config/containers/systemd/omada/brrr.env
 Volume=%h/.config/omada-brrr-relay/relay.py:/app/relay.py:ro
 Exec=python3 -u /app/relay.py
-ReadOnly=true
 Network=caddy.network
+# Hardening: the relay only needs to read relay.py, listen on an
+# unprivileged port and make outbound HTTPS requests
+User=65534:65534
+ReadOnly=true
+ReadOnlyTmpfs=false
+DropCapability=all
+NoNewPrivileges=true
+PidsLimit=32
+PodmanArgs=--memory=64m
 
 [Service]
 Restart=always
